@@ -11,5 +11,8 @@
   "license": "ISC",
   "devDependencies": {
     "nodemon": "^2.0.0"
+  },
+  "dependencies": {
+    "route-parser": "0.0.5"
   }
 }
