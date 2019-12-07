@@ -11,7 +11,7 @@ app.get('/', function (req, res) {
 
   const {query} = url.parse(req.url,true)
   const {name} = query
-  res.send(`<h1>Hello ${name || 'World' }</h1>`)
+  res.write(`<h1>Hello ${name || 'World' }</h1>`)  
   })
 
 app.get('/hello', function (req, res) {
@@ -31,8 +31,9 @@ app.get('/hello', function (req, res) {
           user=JSON.parse(data) // transform to  6
           if(fs.existsSync(LOCAL_DB)){
               const json = require(`./${LOCAL_DB}`)
-              // gere le cas ou on supprime un user entre 2 id afin deviter doublons
-              const max_id = Math.max.apply(Math, json.map(obj => obj.id))                
+              
+              // gere le cas ou on supprime un user entre 2 id afin deviter doublons et le cas ou le fichier a est un tableau vide
+              const  max_id = json.lenght ==0 ? 0 : Math.max.apply(Math, json.map(obj => obj.id))          
               user.id = max_id +1 
               json.push(user)
               data = json
@@ -74,12 +75,12 @@ app.get('/hello', function (req, res) {
 
   })
 
-  app.delete('/students/',function (req, res){
+  app.delete('/students/:id',function (req, res){
     if(fs.existsSync(LOCAL_DB)){
 
       const json = require(`./${LOCAL_DB}`) 
       let newJson=[]
-      console.log('req ',req.id)
+     // console.log('req ',req.id)
       if (!req.id){
         fs.writeFileSync(LOCAL_DB,JSON.stringify([],null,' '))
       }
@@ -93,7 +94,14 @@ app.get('/hello', function (req, res) {
     }
   })
 
-  app.all()
+  app.all('/students/all', function (req,res){
+    //console.log(res.routes) 
+    res.routes.forEach(([index,cb]) =>{
+      cb(req,res)
+      
+    });
+    
+  })
 
   app.listen(8080)
 
