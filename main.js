@@ -4,7 +4,6 @@ const express = require('./my-express')
 const app =  express()
 const url = require('url')
 const fs = require('fs')
-const Route = require('route-parser')
 const LOCAL_DB= 'students.json'
 
 app.get('/', function (req, res) {
@@ -18,12 +17,12 @@ app.get('/', function (req, res) {
 
 app.get('/hello', function (req, res) {
       
-  app.render('home',{name:'Josias'}, (err, html) => {
+  app.render('home',{name:'Josias',weight:150}, (err, html) => {
     if(err){
-      res.write(err)
+      res.write(err) 
     }
     else{
-      res.write(html)
+      res.write(html) 
     }
   
   })
